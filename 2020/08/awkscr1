@@ -1,0 +1,14 @@
+{ cmd[++n] = $1; val[n] = $2; }
+END {
+  while (++curr_line) {
+    if (visited[curr_line]) {
+      print total;
+      break;
+    }
+    visited[curr_line] = 1;
+    if ("jmp" ~ cmd[curr_line])
+      curr_line += val[curr_line--];
+    if ("acc" ~ cmd[curr_line]) 
+      total += val[curr_line];
+  }
+}

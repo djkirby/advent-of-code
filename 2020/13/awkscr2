@@ -1,0 +1,25 @@
+function busDeparts(offset) {
+  return $offset == "x" || !((time + offset - 1) % $offset);
+}
+
+function getStreak(_streak) {
+  for (i = 1; i <= NF; i++) {
+    if (!busDeparts(i))
+      return _streak;
+    _streak++;
+  } 
+  return _streak;
+}
+
+BEGIN { FS = "," }
+NR > 1 { 
+  ++dt;
+  while (streak < NF) {
+    time += dt;
+    streak = getStreak();
+    streak_times[streak] = streak_times[streak] "," time
+    if (split(streak_times[streak], _streak_times, ",") >= 3) 
+      dt = _streak_times[3] - _streak_times[2]
+  }
+  print time
+}

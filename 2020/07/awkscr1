@@ -1,0 +1,31 @@
+function get_path(g, s, e, p, gs, ps, n) {
+  p = p (p ? "," : "") s;
+  if (s == e) 
+    return p;
+  _ = split(g[s], gs, ",");
+  _ = split(p, ps, ",");
+  for (n in gs) {
+    if (!(gs[n] in ps)) {
+      np = get_path(g, gs[n], e, p);
+      if (np != "") 
+        return np;
+    }
+  }
+}
+BEGIN { FS = "," }
+{
+  _ = split($1, words, " ");
+  from = words[1] " " words[2]
+  for (i = 1; i <= NF; i++) {
+    l = split($i, words2, " ");
+    to = words2[l - 2] " " words2[l - 1];
+    if (to != "no other") 
+      graph[from] = graph[from] (graph[from] ? "," : "") to;
+  }
+}
+END {
+  for (x in graph) 
+    if (get_path(graph, x, "shiny gold", "")) 
+      t++;
+  print t - 1;
+}

@@ -1,0 +1,10 @@
+function valid() {
+  for (i = NR - pl; i <= NR - 1; i++)
+    for (j = NR - pl; j <= NR - 1; j++) 
+      if (i != j && ln[i] + ln[j] == $1) 
+        return 1;
+}
+
+BEGIN { pl = 25 }
+{ ln[NR] = $1 }
+NR > pl && !valid() { print $1; exit; }

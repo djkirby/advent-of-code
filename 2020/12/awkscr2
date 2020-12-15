@@ -1,0 +1,24 @@
+BEGIN {
+  wx = 10;
+  wy = 1;
+  split("1 -1 -1", rot_mults, " ");
+}
+{ 
+  val = substr($1, 2); 
+  rotations = val / 90; 
+}
+/L/ { rotations = 4 - rotations; }
+/[LR]/ { 
+  _wx = rot_mults[rotations] * (rotations % 2 ? wy : wx);
+  wy = rot_mults[rotations % 3 + 1] * (rotations % 2 ? wx : wy);
+  wx = _wx;
+}
+/F/ {
+  x += wx * val;
+  y += wy * val;
+}
+/N/ { wy += val; }
+/E/ { wx += val; }
+/S/ { wy -= val; }
+/W/ { wx -= val; }
+END { print sqrt(x ^ 2) + sqrt(y ^ 2); }

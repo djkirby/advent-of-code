@@ -1,0 +1,12 @@
+function nextBus(id) {
+  return int(time / id + 1) * id
+}
+
+BEGIN { FS = "," }
+NR == 1 { time = $1 }
+NR > 1 { 
+  for (i = 1; i <= NF; i++) 
+    if ($i != "x" && (!min || nextBus($i) < nextBus(min))) 
+      min = $i
+  print (nextBus(min) - time) * min
+}

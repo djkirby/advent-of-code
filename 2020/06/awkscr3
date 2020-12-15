@@ -1,0 +1,16 @@
+BEGIN { RS = ""; }
+{
+  l = split("abcdefghijklmnopqrstuvwxyz", letters, "");
+  for (i = 1; i <= NF; i++) {
+    for (j = 1; j <= l; j++) {
+      if ($i ~ letters[j]) {
+        printf("1");
+      } else {
+        printf("0");
+      }
+    }
+    printf("\n");
+  }
+  print ""
+}
+END { print n }

@@ -1,0 +1,25 @@
+BEGIN {
+  dirXi = 0;
+  dirYi = 1;
+  split("1 0 -1", dirs, " ");
+}
+{ val = substr($1, 2); }
+/F/ {
+  if (dirs[dirXi + 1]) 
+    x += dirs[dirXi + 1] * val;
+  else 
+    y += dirs[dirYi + 1] * val;
+}
+/L/ {
+  dirXi = (dirXi - (val / 90) + 4) % 4;
+  dirYi = (dirYi - (val / 90) + 4) % 4;
+}
+/R/ {
+  dirXi = (dirXi + (val / 90)) % 4;
+  dirYi = (dirYi + (val / 90)) % 4;
+}
+/N/ { y += val; }
+/E/ { x += val; }
+/S/ { y -= val; }
+/W/ { x -= val; }
+END { print sqrt(x ^ 2) + sqrt(y ^ 2); }

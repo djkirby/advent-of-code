@@ -1,0 +1,20 @@
+NR > 1 { 
+  c = split("1,3,5,7", dxs, ",")
+  for (i = 1; i <= c; i++) {
+    x[i] = (x[i] + dxs[i]) % length($0)
+    cell = substr($0, x[i] + 1, 1)
+    if (cell == "#") totals[i]++
+  }
+}
+NR > 1 && NR % 2 == 1 {
+  x[5] = (x[5] + 1) % length($0);
+  cell = substr($0, x[5] + 1, 1);
+  if (cell == "#") totals[5]++;
+}
+END {
+  grandtotal = 1
+  for (i = 1; i <= c + 1; i++) {
+    grandtotal *= totals[i]
+  }
+  print grandtotal
+}

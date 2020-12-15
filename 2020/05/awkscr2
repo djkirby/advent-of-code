@@ -1,0 +1,35 @@
+BEGIN { FS = ""; rows = 128; cols = 8; }
+{
+  l = 0; 
+  h = rows - 1;
+  for (i = 1; i <= 7; i++) {
+    d = (h - l + 1) / 2;
+    if ($(i) == "F")
+      h -= d;
+    else
+      l += d;
+  }
+  row = l;
+
+  l = 0;
+  h = cols - 1;
+  for (i = 8; i <= 10; i++) {
+    d = (h - l + 1) / 2;
+    if ($(i) == "L")
+      h -= d;
+    else
+      l += d;
+  }
+  col = l;
+  
+  id = row * cols + col;
+  seat[id + 1] = 1;
+}
+END {
+  for (i = 2; i < rows * cols; i++) {
+    if (seat[i - 1] && !seat[i] && seat[i + 1]) {
+      print i - 1;
+      exit;
+    }
+  }
+}

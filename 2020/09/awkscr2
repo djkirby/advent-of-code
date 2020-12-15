@@ -1,0 +1,28 @@
+function valid() {
+  for (i = NR - pl; i <= NR - 1; i++)
+    for (j = NR - pl; j <= NR - 1; j++) 
+      if (i != j && ln[i] + ln[j] == $1) 
+        return 1;
+}
+
+BEGIN { pl = 25 }
+{ ln[NR] = $1 }
+NR > pl && !valid() { invalid = $1 }
+END {
+  for (i = 1; i <= NR; i++) {
+    t = 0;
+    for (j = i + 1; j <= NR; j++) {
+      t += ln[j];
+      if (t == invalid) {
+        for (k = i + 1; k <= j; k++) {
+          if (!min || ln[k] < min)
+            min = ln[k];
+          if (!max || ln[k] > max)
+            max = ln[k];
+        }
+        print invalid, min + max;
+        exit;
+      }
+    }
+  }
+}

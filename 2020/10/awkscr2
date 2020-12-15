@@ -1,0 +1,17 @@
+function count_paths(node, _neighbors_list, _sum) {
+  if (node == $1) 
+    return 1;
+  if (!num_paths[node]) {
+    split(neighbors[node], _neighbors_list, ",");
+    for (k in _neighbors_list) 
+      _sum += count_paths(_neighbors_list[k]);  
+    num_paths[node] = _sum; 
+  }
+  return num_paths[node];
+}
+
+{ 
+  for (i = 1; i <= 3; i++) 
+    neighbors[$0 - i] = neighbors[$0 - i] "," $0
+}
+END { print count_paths(0) }

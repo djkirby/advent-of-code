@@ -1,0 +1,2 @@
+{ diff[$1 - prev]++; prev = $1; }
+END { print diff[1] * ++diff[3] }

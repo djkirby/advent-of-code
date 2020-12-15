@@ -1,0 +1,36 @@
+# 2.1
+
+awk -F'[-: ]' '
+  {
+    min = $1;
+    max = $2;
+    char = $3;
+    pass = $5;
+    count = split(pass, _a, char) - 1; 
+    if (count >= min && count <= max) {
+      n++
+    }
+  }
+  END { print n }
+' input
+
+
+#-----
+
+# 2.2
+
+awk -F'[-: ]' '
+  {
+    pos1 = $1;
+    pos2 = $2;
+    char = $3;
+    pass = $5;
+    c1 = substr(pass, pos1, 1);
+    c2 = substr(pass, pos2, 1);
+    if ((c1 == char || c2 == char) && c1 != c2) {
+      n++
+    }
+  }
+  END { print n }
+' input
+

@@ -1,0 +1,24 @@
+function bags(g, n, gsn, nw, t) {
+  _ = split(g[n], gsn, ",");
+  if (g[n] == "")
+    return 0
+  for (nh in gsn) {
+    _ = split(gsn[nh], nw, "!");
+    t += nw[2] + nw[2] * bags(g, nw[1])
+  }
+  return t;
+}
+
+BEGIN { FS = "," }
+{
+  _ = split($1, words, " ");
+  from = words[1] " " words[2]
+  for (i = 1; i <= NF; i++) {
+    l = split($i, words2, " ");
+    to = words2[l - 2] " " words2[l - 1];
+    w = words2[l - 3];
+    if (to != "no other") 
+      graph[from] = graph[from] (graph[from] ? "," : "") to "!" w;
+  }
+}
+END { print bags(graph, "shiny gold") }

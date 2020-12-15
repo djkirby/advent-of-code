@@ -1,0 +1,18 @@
+function total(curr_line, acc) {
+  if (visited[curr_line]) 
+    return acc;
+  visited[curr_line] = 1;
+  if ("jmp" ~ cmd[curr_line])
+    return total(
+      curr_line + val[curr_line], 
+      acc
+    );
+  if ("acc" ~ cmd[curr_line]) 
+    return total(
+      curr_line + 1, 
+      acc + val[curr_line]
+    );
+  return total(curr_line + 1, acc);
+}
+{ cmd[++n] = $1; val[n] = $2; }
+END { print total(1, 0); }

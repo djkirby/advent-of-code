@@ -1,0 +1,7 @@
+BEGIN { FS = ","; printf("https://www.wolframalpha.com/input/?i="); }
+NR > 1 { 
+  for (i = 1; i <= NF; i++)
+    if ($i != "x") 
+      printf("%28t+%2B+%d%29+mod+%d+%3D%3D+0%2C", i - 1, $i);
+  print ""
+}

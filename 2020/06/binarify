@@ -1,0 +1,10 @@
+BEGIN { RS = "" }
+{
+  l = split("abcdefghijklmnopqrstuvwxyz", letters, "");
+  for (i = 1; i <= NF; i++) {
+    for (j = 1; j <= l; j++) 
+      printf($i ~ letters[j]);
+    print ""
+  }
+  print ""
+}

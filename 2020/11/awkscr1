@@ -1,0 +1,52 @@
+function count_adjacent(y, x, n) {
+  hasLeft = x > 1;
+  hasUp = y > 1;
+  hasRight = x < NF;
+  hasDown = y < NR;
+  n += (hasUp && occupied[y - 1, x]);
+  n += (hasUp && hasRight && occupied[y - 1, x + 1]);
+  n += (hasRight && occupied[y, x + 1]);
+  n += (hasDown && hasRight && occupied[y + 1, x + 1]);
+  n += (hasDown && occupied[y + 1, x]);
+  n += (hasDown && hasLeft && occupied[y + 1, x - 1]);
+  n += (hasLeft && occupied[y, x - 1]);
+  n += (hasUp && hasLeft && occupied[y - 1, x - 1]);
+  return n;
+}
+
+BEGIN { FS = "" }
+{ 
+  for (x = 1; x <= NF; x++) {
+    occupied[NR, x] = $x == "L"; 
+    floor[NR, x] = $x == ".";
+  }
+} 
+END {
+  while (1) {
+    total = 0;
+    changed = 0;
+    for (y = 1; y <= NR; y++) 
+      for (x = 1; x <= NF; x++) {
+        if (floor[y,x])
+          continue;
+        copy[y, x] = occupied[y, x];
+        adjacent = count_adjacent(y, x);
+        if (occupied[y, x] && adjacent > 3) 
+          copy[y, x] = 0;
+        else if (!occupied[y, x] && !adjacent) 
+          copy[y, x] = 1;
+      }
+    for (y = 1; y <= NR; y++) 
+      for (x = 1; x <= NF; x++) {
+        if (occupied[y,x] != copy[y,x])
+          changed=1;
+        occupied[y,x] = copy[y,x];
+        if (occupied[y,x]) 
+          total++;
+      }
+    if (!changed) {
+      print total;
+      break;
+    }
+  }
+}

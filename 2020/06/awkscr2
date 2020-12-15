@@ -1,0 +1,18 @@
+function and(n1, n2) {
+  n3 = "";
+  for (j = 1; j <= length(n1); j++) {
+    a = substr(n1, j, 1);
+    b = substr(n2, j, 1);
+    n3 = n3 (a == 1 && b == 1);
+  }
+  return n3;
+}
+
+BEGIN { RS = "" }
+{
+  x = $1;
+  for (i = 2; i <= NF; i++)
+    x = and(x, $i);
+  n += split(x, _, 1) - 1;
+}
+END { print n }
