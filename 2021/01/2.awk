@@ -1,9 +1,7 @@
-{ l[++n] = $1 }
-END {
-  for (i = 4; i <= n; i++)  {
-    prev = curr;
-    curr = l[i - 2] + l[i - 1] + l[i];
-    c += (curr > prev);
-  }
-  print c;
+{ 
+  c += ($1 + p1 + p2 > p1 + p2 + p3);
+  p3 = p2;
+  p2 = p1;
+  p1 = $1; 
 }
+END { print c - 3; }
