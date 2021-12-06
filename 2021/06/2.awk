@@ -5,7 +5,6 @@ function count(days, n) {
   return memo[days, n];
 }
 
-
 BEGIN { RS = "," }
 { total += count(256, $1) }
 END { print total }
