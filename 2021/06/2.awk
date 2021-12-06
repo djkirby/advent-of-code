@@ -1,13 +1,11 @@
-BEGIN { FS = "," }
-{ for (i = 1; i <= NF; i++) fish[i] = $i }
-END {
-  while (++days < 256) {
-    for (e in fish) {
-      if (--fish[e] < 0) {
-        fish[e] = 6;
-        fish[length(fish) + 1] = 8;
-      }
-    } 
-  }
-  print length(fish);
+function count(days, n) {
+  if (memo[days, n]) 
+    return memo[days, n];
+  memo[days, n] = !days ? 1 : !n ? count(days - 1, 6) + count(days - 1, 8) : count(days - 1, n - 1);
+  return memo[days, n];
 }
+
+
+BEGIN { RS = "," }
+{ total += count(256, $1) }
+END { print total }

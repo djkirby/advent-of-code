@@ -1,11 +1,8 @@
-BEGIN { FS = "," }
-{ for (i = 1; i <= NF; i++) fish[i] = $i }
-END {
-  while (++days < 80) 
-    for (e in fish) 
-      if (--fish[e] < 0) {
-        fish[e] = 6;
-        fish[length(fish) + 1] = 8;
-      }
-  print length(fish);
+function count(days, n) {
+  return !days ? 1 : !n-- ? count(days - 1, 6) + count(days - 1, 8) : count(days - 1, n);
 }
+
+
+BEGIN { RS = "," }
+{ total += count(80, $1) }
+END { print total }
