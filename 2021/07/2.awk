@@ -1,10 +1,17 @@
-function count(days, n) {
-  if (memo[days, n]) 
-    return memo[days, n];
-  memo[days, n] = !days ? 1 : !n ? count(days - 1, 6) + count(days - 1, 8) : count(days - 1, n - 1);
-  return memo[days, n];
+function dist(n) { 
+  if (memo[n])
+    return memo[n];
+  memo[n] = !n ? 0 : n + dist(n - 1); 
+  return memo[n];
 }
 
 BEGIN { RS = "," }
-{ total += count(256, $1) }
-END { print total }
+{ nums[$1]++ }
+END {
+  for (p1 in nums) {
+    for (p2 in nums) 
+      fuel[p1] += nums[p2] * dist(p2 - p1 > 0 ? p2 - p1 : p1 - p2);
+    minPos = !minPos || fuel[p1] < fuel[minPos] ? p1 : minPos;
+  }
+  print fuel[minPos]
+}
