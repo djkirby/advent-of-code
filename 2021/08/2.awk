@@ -1,5 +1,4 @@
-function bin(chars) {
-  s = ""
+function bin(chars, s) {
   s = s !!index(chars, "a")
   s = s !!index(chars, "b")
   s = s !!index(chars, "c")
@@ -12,27 +11,26 @@ function bin(chars) {
 
 function difference(a, b) {
   split(a, chars, "");
-  for (e in chars) {
-    if (!index(b, chars[e])) {
+  for (e in chars) 
+    if (!index(b, chars[e])) 
       return chars[e];
-    }
-  }
 }
 
-BEGIN{tot=0}
 {
+  for (e in mapping) 
+    delete mapping[e];
+  for (e in mapped) 
+    delete mapped[e];
   for (i = 1; i <= 10; i++) {
-    signal[i] = $i;
     l = length($i);
-    if (l == 2) {
+    if (l == 2) 
       mapping[1] = $i;
-    } else if (l == 3) {
+    else if (l == 3)
       mapping[7] = $i;
-    } else if (l == 4) {
+    else if (l == 4)
       mapping[4] = $i;
-    } else if (l == 7) {
+    else if (l == 7)
       mapping[8] = $i;
-    }
   }
   segment[1] = difference(mapping[7], mapping[1]);
   for (i = 1; i <= 10; i++) {
@@ -52,34 +50,21 @@ BEGIN{tot=0}
       } 
     }
   }
-  for (i = 1; i <= 10; i++) {
-    if (length($i) == 5) {
-      if (!index($i, segment[3])) {
+  for (i = 1; i <= 10; i++) 
+    if (length($i) == 5) 
+      if (!index($i, segment[3])) 
         mapping[5] = $i;
-      }
-    }
-  }
-  for (i = 1; i <= 10; i++) {
-    if (length($i) == 5) {
-      if (!index($i, segment[6])) {
+  for (i = 1; i <= 10; i++) 
+    if (length($i) == 5) 
+      if (!index($i, segment[6])) 
         mapping[2] = $i;
-      }
-    }
-  }
-  for (e in mapping) {
+  for (e in mapping) 
     mapped[mapping[e]]++;
-  }
   for (i = 1; i <= 10; i++) {
     if (length($i) == 5) {
       if (!mapped[$i]) {
         mapping[3] = $i;
         mapped[$i]++;
-      }
-    }
-    if (length($i) == 6) {
-      if (!mapped[$i]) {
-        #mapping[0] = $i;
-        #mapped[$i]++;
       }
     }
   }
@@ -89,29 +74,17 @@ BEGIN{tot=0}
       if (index($i, segment[5]) && !mapped[$i]) {
         mapped[$i]++;
         mapping[0] = $i;
-        x=1;
       } else if (!mapped[$i]) {
         mapping[9]=$i;
+        mapped[$i]++
       }
     }
   }
-  for (e in mapping) {
-    print e, mapping[e]
-  }
-  print "!"
-  for (e in segment) {
-    print e, segment[e]
-  }
-  print  "----"
   d=""
-  for (i = 12; i <= 15; i++) {
-    for (e in mapping) {
-      if (bin(mapping[e]) == bin($i)) {
+  for (i = 12; i <= 15; i++) 
+    for (e in mapping) 
+      if (bin(mapping[e]) == bin($i)) 
         d = d e 
-      }
-    }
-  }
-  tot += int(d)
-  print int(d),tot
+  tot += d
 }
 END {  print tot}
