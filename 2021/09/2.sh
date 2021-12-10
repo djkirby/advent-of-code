@@ -1,1 +1,1 @@
-awk -f 2.awk input | sort -n | tail -n 3 | awk 'BEGIN{t = 1}{t *= $1}END{print t}'
+awk -f 2.awk input | sort -n | awk '{e[NR] = $1}END{print $1 * e[NR-1] * e[NR-2]}'
