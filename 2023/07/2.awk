@@ -12,16 +12,16 @@ function four_kind(h) {
     return system("perl -le \"exit \\\"" h "\\\" =~ /(.).*\\1.*\\1.*\\1/\"")
 }
 
+function full_house(h) {
+    return system("perl -le \"exit \\\"" h "\\\" =~ /(?=.*?(.)(?=.*?\\1.*?\\1))(?=.*?(?!\\1)(.)(?=.*?\\2))/\"")
+}
+
 function three_kind(h) {
     return system("perl -le \"exit \\\"" h "\\\" =~ /(.).*\\1.*\\1/\"")
 }
 
 function two_pair(h, n, a, pair2, found2) {
-    n = split(h, a, "")
-    for (i = 1; i <= n; i++) {
-        pair2[NR] += (++found2[NR, a[i]] == 2)
-        if (pair2[NR] == 2) return 1
-    }
+    return system("perl -le \"exit \\\"" h "\\\" =~ /(?=.*?(.)(?=.*?\\1))(?=.*?(?!\\1)(.)(?=.*?\\2))/\"")
 }
 
 function pair(h) {
@@ -44,15 +44,7 @@ BEGIN {
         (jokers == 2 && pair(z)) ||
         (jokers == 3) ||
         four_kind($1)) { print 6, val($1), $0; next }
-    n = split($1, a, "")
-    for (i = 1; i <= n; i++) found[NR, a[i]]++
-    for (i = 1; i <= n; i++) {
-        three[NR] += (found[NR, a[i]] == 3)
-        p[NR] += (found[NR, a[i]] == 2)
-    }
-    if ((jokers == 1 && two_pair(z)) || (three[NR] && p[NR])) {
-        print 5, val($1), $0; next
-    }
+    if ((jokers == 1 && two_pair(z)) || full_house($1)) { print 5, val($1), $0; next }
     if ((jokers == 1 && pair(z)) ||
         (jokers == 2) ||
         three_kind($1)) { print 4, val($1), $0; next }
